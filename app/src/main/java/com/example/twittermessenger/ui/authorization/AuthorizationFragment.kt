@@ -2,6 +2,7 @@ package com.example.twittermessenger.ui.authorization
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,10 @@ import com.example.twittermessenger.R
 import com.example.twittermessenger.common.Constants.TWITTER_AUTHORIZATION_URL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_autorization.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthorizationFragment : Fragment() {
@@ -45,8 +50,6 @@ class AuthorizationFragment : Fragment() {
                 settings.javaScriptEnabled = true
             }
         })
-
-
 
     }
 }

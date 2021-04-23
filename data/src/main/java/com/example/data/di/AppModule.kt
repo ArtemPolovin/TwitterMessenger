@@ -2,7 +2,7 @@ package com.example.data.di
 
 import com.example.data.network.RequestTokenApi
 import com.example.data.repositoryimpl.RequestTokenRepositoryImpl
-import com.example.domain.repositories.IRequestTokenRepository
+import com.example.domain.repositories.RequestTokenRepository
 import com.example.domain.usecases.GetTokenUseCase
 import dagger.Module
 import dagger.Provides
@@ -21,10 +21,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRequestTokenRepositoryImpl(requestTokenApi: RequestTokenApi): IRequestTokenRepository =
+    fun provideRequestTokenRepositoryImpl(requestTokenApi: RequestTokenApi): RequestTokenRepository =
         RequestTokenRepositoryImpl(requestTokenApi)
 
     @Provides
-    fun provideGetTokenUseCase(requestTokenRepo: IRequestTokenRepository) = GetTokenUseCase(requestTokenRepo)
+    fun provideGetTokenUseCase(requestTokenRepo: RequestTokenRepository) = GetTokenUseCase(requestTokenRepo)
 
 }

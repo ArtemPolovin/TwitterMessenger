@@ -7,6 +7,6 @@
     <fragment
         android:id="@+id/authorizationFragment"
         android:name="com.example.twittermessenger.ui.authorization.AuthorizationFragment"
-        android:label="fragment_autorization"
+        android:label="Authorization"
         tools:layout="@layout/fragment_autorization" />
 </navigation>
