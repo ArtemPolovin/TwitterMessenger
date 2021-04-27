@@ -37,7 +37,8 @@ ext.versions = [
         espressoCore    : "3.3.0",
         navFragment     : "2.2.2",
         daggerHilt      : "2.33-beta",
-        coroutines      : "1.4.1"
+        coroutines      : "1.4.1",
+        liveData        : "2.2.0"
 ]
 
 ext.core = [
@@ -88,4 +89,10 @@ ext.daggerHilt = [
 ext.coroutines = [
         coroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines",
         coroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+]
+
+ext.lifecycle = [
+        viewmodel          : "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.liveData",
+       // livedataKtx        : "androidx.lifecycle:lifecycle-livedata-ktx:$versions.liveData",
+        lifecycleExtentions: "androidx.lifecycle:lifecycle-extensions:$versions.liveData"
 ]

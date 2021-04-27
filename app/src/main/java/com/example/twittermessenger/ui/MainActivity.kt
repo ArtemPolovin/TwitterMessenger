@@ -2,6 +2,8 @@ package com.example.twittermessenger.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -27,4 +29,15 @@ class MainActivity : AppCompatActivity() {
 
         setupActionBarWithNavController(navController)
     }
+
+/*    override fun onResume() {
+        super.onResume()
+        val url = intent.data
+        if (url != null) {
+            Log.i(">>>>>>>>>>>>>>>>>>", "$url")
+            Toast.makeText(this, "yay!!!", Toast.LENGTH_LONG).show()
+        } else {
+            Log.i("..................","url = null")
+        }
+    }*/
 }

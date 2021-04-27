@@ -14,4 +14,8 @@ dependencies {
     //Coroutines
     implementation coroutines.coroutinesCore
     implementation coroutines.coroutinesAndroid
+
+    //Retrofit2
+    implementation retrofit2.retrofit
+    implementation retrofit2.converterGson
 }
