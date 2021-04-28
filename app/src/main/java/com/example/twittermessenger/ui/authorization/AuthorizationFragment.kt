@@ -1,7 +1,6 @@
 package com.example.twittermessenger.ui.authorization
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,12 +13,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.example.twittermessenger.R
-import com.example.twittermessenger.common.Constants.CALL_BACK_URL
-import com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY
 import com.example.twittermessenger.common.Constants.TWITTER_AUTHORIZATION_URL
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_autorization.*
-import java.net.URISyntaxException
 
 @AndroidEntryPoint
 class AuthorizationFragment : Fragment() {
@@ -59,28 +55,12 @@ class AuthorizationFragment : Fragment() {
                     view: WebView?,
                     request: WebResourceRequest?
                 ): Boolean {
-                    var uri: Uri? = null
 
-                    request?.let { it ->
-                        if (it.url.toString().contains(CALL_BACK_URL)) {
-
-                            try {
-                                uri = Uri.parse(it.url.toString())
-                            } catch (e: URISyntaxException) {
-                                e.printStackTrace()
-                            }
-
-                            uri?.let {
-                                val verifier = it.getQueryParameter(OAUTH_VERIFIER_PARAMETER_KEY)
-                                verifier?.let { viewModel.receiveAccessToken(verifier = verifier) }
-                            }
-                            return true
-                        }
-                    }
-
-                    return false
+                   return viewModel.handleUrl(request)
                 }
             }
+
+
         })
 
     }

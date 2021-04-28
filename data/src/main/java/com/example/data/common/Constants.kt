@@ -10,5 +10,6 @@ object Constants {
     const val SHARED_PREFS = "sharedPrefs"
     const val ACCESS_OAUTH_TOKEN = "accessOAuthToken"
     const val ACCESS_OAUTH_TOKEN_SECRET = "accessOAuthTokenSecret"
+    const val CALL_BACK_URL = "https://www.myandroidmessenger.com"
 
 }

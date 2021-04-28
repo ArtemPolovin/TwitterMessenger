@@ -1,6 +1,6 @@
 package com.example.data.network
 
-import com.example.data.common.AccessTokenCache
+import com.example.data.common.Constants.CALL_BACK_URL
 import com.example.data.common.Constants.CONSUMER_KEY
 import com.example.data.common.Constants.CONSUMER_SECRET
 import com.example.data.common.Constants.URL_ACCESS_TOKEN
@@ -13,7 +13,7 @@ import oauth.signpost.OAuthProvider
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider
 
-class RequestTokenApi(private val accessTokenCache: AccessTokenCache) {
+class RequestTokenApi {
 
     private val consumer: OAuthConsumer = CommonsHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET)
     private val provider: OAuthProvider = CommonsHttpOAuthProvider(
@@ -26,24 +26,19 @@ class RequestTokenApi(private val accessTokenCache: AccessTokenCache) {
 
 
         withContext(Dispatchers.IO) {
-            provider.retrieveRequestToken(consumer, "https://www.youtube.com")
+            provider.retrieveRequestToken(consumer, CALL_BACK_URL)
         }
 
         return consumer.token
     }
 
-    suspend fun getAccessToken(verifier: String): Map<String, String> {
+    suspend fun getAccessToken(verifier: String): OAuthConsumer {
 
         withContext(Dispatchers.IO) {
             provider.retrieveAccessToken(consumer, verifier)
         }
 
-        val oauthToken = consumer.token
-        val oauthTokenSecret = consumer.tokenSecret
-
-        accessTokenCache.saveOAuthToken(oauthToken)
-        accessTokenCache.saveOAuthTokenSecret(oauthTokenSecret)
-        return mapOf("oauthToken" to oauthToken, "oauthTokenSecret" to oauthTokenSecret)
+        return consumer
     }
 
 }

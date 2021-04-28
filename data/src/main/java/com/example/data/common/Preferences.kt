@@ -4,7 +4,7 @@ import android.content.SharedPreferences
 import com.example.data.common.Constants.ACCESS_OAUTH_TOKEN
 import com.example.data.common.Constants.ACCESS_OAUTH_TOKEN_SECRET
 
-data class AccessTokenCache(
+ class Preferences(
     private val sharedPref: SharedPreferences
 ){
 

@@ -2,8 +2,9 @@ package com.example.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.data.common.AccessTokenCache
+import com.example.data.common.Preferences
 import com.example.data.common.Constants.SHARED_PREFS
+import com.example.data.mapers.OAuthConsumerToMap
 import com.example.data.network.RequestTokenApi
 import com.example.data.repositoryimpl.RequestTokenRepositoryImpl
 import com.example.domain.repositories.RequestTokenRepository
@@ -24,9 +25,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRequestTokenRepositoryImpl(
-        requestTokenApi: RequestTokenApi
+        requestTokenApi: RequestTokenApi,
+        preferences: Preferences,
+        oauthConsumerToMap: OAuthConsumerToMap
     ): RequestTokenRepository =
-        RequestTokenRepositoryImpl(requestTokenApi)
+        RequestTokenRepositoryImpl(requestTokenApi,preferences,oauthConsumerToMap)
 
 
     @Provides
@@ -44,11 +47,14 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideAccessTokenCache(sharedPref: SharedPreferences) = AccessTokenCache(sharedPref)
+    fun providePreferences(sharedPref: SharedPreferences) = Preferences(sharedPref)
 
     @Provides
     @Singleton
-    fun provideRequestTokenApi(accessTokenCache: AccessTokenCache) = RequestTokenApi(accessTokenCache)
+    fun provideRequestTokenApi() = RequestTokenApi()
+
+    @Provides
+    fun provideOAthConsumerToMap() = OAuthConsumerToMap()
 
 
 }
