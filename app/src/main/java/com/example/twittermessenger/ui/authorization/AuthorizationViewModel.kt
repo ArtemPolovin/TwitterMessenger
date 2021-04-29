@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.common.Constants
+import com.example.data.common.Preferences
 import com.example.domain.usecases.GetAccessTokenUseCase
 import com.example.domain.usecases.GetTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,13 +20,14 @@ import javax.inject.Inject
 class AuthorizationViewModel @Inject constructor(
     private val getTokenUseCase: GetTokenUseCase,
     private val getAccessTokenUseCase: GetAccessTokenUseCase,
+    private val preferences: Preferences
 ) : ViewModel() {
 
     private val _token = MutableLiveData<String>()
     val token: LiveData<String> get() = _token
 
     private val _accessToken = MutableLiveData<Map<String, String>>()
-    val accessToken: LiveData<Map<String,String>> get() = _accessToken
+    val accessToken: LiveData<Map<String, String>> get() = _accessToken
 
 
     private fun fetchToken() {
@@ -36,7 +38,7 @@ class AuthorizationViewModel @Inject constructor(
 
     private fun myAccessToken(verifier: String) {
         viewModelScope.launch {
-           _accessToken.value =  getAccessTokenUseCase.invoke(verifier)
+            _accessToken.value = getAccessTokenUseCase.invoke(verifier)
         }
     }
 
@@ -53,7 +55,8 @@ class AuthorizationViewModel @Inject constructor(
                 }
 
                 uri?.let {
-                    val verifier = it.getQueryParameter(com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY)
+                    val verifier =
+                        it.getQueryParameter(com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY)
                     verifier?.let { myAccessToken(verifier = verifier) }
                 }
                 return true
@@ -66,5 +69,14 @@ class AuthorizationViewModel @Inject constructor(
     fun receiveToken() {
         fetchToken()
     }
+
+    fun isAuthorized(): Boolean {
+        val authToken = preferences.loadOAuthToken()
+        val authTokenSecret = preferences.loadOAuthTokenSecret()
+
+        return authToken.isNotEmpty() && authTokenSecret.isNotEmpty()
+
+    }
+
 
 }

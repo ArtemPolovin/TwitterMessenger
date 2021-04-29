@@ -2,13 +2,13 @@ package com.example.twittermessenger.ui.authorization
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -32,9 +32,17 @@ class AuthorizationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        viewModel.receiveToken()
-        webViewSetup()
-        accessTokenSetup()
+        authorizationChecking()
+    }
+
+    private fun authorizationChecking() {
+        if (viewModel.isAuthorized()) {
+            Toast.makeText(requireContext(), "You have already authorized",
+                Toast.LENGTH_LONG).show()
+        } else {
+            viewModel.receiveToken()
+            webViewSetup()
+        }
 
     }
 
@@ -56,7 +64,7 @@ class AuthorizationFragment : Fragment() {
                     request: WebResourceRequest?
                 ): Boolean {
 
-                   return viewModel.handleUrl(request)
+                    return viewModel.handleUrl(request)
                 }
             }
 
@@ -65,12 +73,4 @@ class AuthorizationFragment : Fragment() {
 
     }
 
-    private fun accessTokenSetup() {
-        viewModel.accessToken.observe(viewLifecycleOwner, Observer {
-            Log.i(
-                "AAAAAAAAAAAAAAA",
-                "oauthToken = ${it["oauthToken"]}\n oauthTokenSecret = ${it["oauthTokenSecret"]}"
-            )
-        })
-    }
 }
