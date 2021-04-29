@@ -21,7 +21,7 @@ import com.example.data.common.Constants.ACCESS_OAUTH_TOKEN_SECRET
     }
 
     fun loadOAuthTokenSecret(): String {
-        return sharedPref.getString(ACCESS_OAUTH_TOKEN_SECRET,"")?:""
+        return sharedPref.getString(ACCESS_OAUTH_TOKEN_SECRET,"")?: ""
     }
 }
 
