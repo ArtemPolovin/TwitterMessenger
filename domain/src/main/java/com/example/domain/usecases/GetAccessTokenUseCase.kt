@@ -1,10 +1,10 @@
 package com.example.domain.usecases
 
-import com.example.domain.repositories.RequestTokenRepository
+import com.example.domain.repositories.RequestTwitterApiRepository
 
-class GetAccessTokenUseCase(private val requestTokenRepo: RequestTokenRepository) {
+class GetAccessTokenUseCase(private val requestTwitterApiRepo: RequestTwitterApiRepository) {
 
    suspend operator fun invoke(verifier: String) =
-        requestTokenRepo.accessToken(verifier)
+        requestTwitterApiRepo.accessToken(verifier)
 
 }

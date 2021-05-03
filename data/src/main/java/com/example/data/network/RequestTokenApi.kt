@@ -1,5 +1,6 @@
 package com.example.data.network
 
+import android.util.Log
 import com.example.data.common.Constants.CALL_BACK_URL
 import com.example.data.common.Constants.CONSUMER_KEY
 import com.example.data.common.Constants.CONSUMER_SECRET
@@ -12,6 +13,9 @@ import oauth.signpost.OAuthConsumer
 import oauth.signpost.OAuthProvider
 import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer
 import oauth.signpost.commonshttp.CommonsHttpOAuthProvider
+import java.net.HttpURLConnection
+import java.net.URL
+import javax.net.ssl.HttpsURLConnection
 
 class RequestTokenApi {
 

@@ -2,13 +2,16 @@ package com.example.data.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.data.common.Preferences
 import com.example.data.common.Constants.SHARED_PREFS
+import com.example.data.common.Preferences
+import com.example.data.mapers.HomeTimelineApiToModel
 import com.example.data.mapers.OAuthConsumerToMap
 import com.example.data.network.RequestTokenApi
-import com.example.data.repositoryimpl.RequestTokenRepositoryImpl
-import com.example.domain.repositories.RequestTokenRepository
+import com.example.data.network.TwitterApi
+import com.example.data.repositoryimpl.RequestTwitterApiRepositoryImpl
+import com.example.domain.repositories.RequestTwitterApiRepository
 import com.example.domain.usecases.GetAccessTokenUseCase
+import com.example.domain.usecases.GetHomeTimelineUseCase
 import com.example.domain.usecases.GetTokenUseCase
 import dagger.Module
 import dagger.Provides
@@ -27,18 +30,30 @@ object AppModule {
     fun provideRequestTokenRepositoryImpl(
         requestTokenApi: RequestTokenApi,
         preferences: Preferences,
-        oauthConsumerToMap: OAuthConsumerToMap
-    ): RequestTokenRepository =
-        RequestTokenRepositoryImpl(requestTokenApi,preferences,oauthConsumerToMap)
+        oauthConsumerToMap: OAuthConsumerToMap,
+        twitterApi: TwitterApi,
+        homeTimelineApiToModel: HomeTimelineApiToModel
+    ): RequestTwitterApiRepository =
+        RequestTwitterApiRepositoryImpl(
+            requestTokenApi,
+            preferences,
+            oauthConsumerToMap,
+            twitterApi,
+            homeTimelineApiToModel
+        )
 
 
     @Provides
-    fun provideGetTokenUseCase(requestTokenRepo: RequestTokenRepository) =
-        GetTokenUseCase(requestTokenRepo)
+    fun provideGetTokenUseCase(requestTwitterApiRepo: RequestTwitterApiRepository) =
+        GetTokenUseCase(requestTwitterApiRepo)
 
     @Provides
-    fun provideGetAccessTokenUseCase(requestTokenRepo: RequestTokenRepository) =
-        GetAccessTokenUseCase(requestTokenRepo)
+    fun provideGetAccessTokenUseCase(requestTwitterApiRepo: RequestTwitterApiRepository) =
+        GetAccessTokenUseCase(requestTwitterApiRepo)
+
+    @Provides
+    fun provideGetHomeTimelineUseCase(requestTwitterApiRepo: RequestTwitterApiRepository) =
+        GetHomeTimelineUseCase(requestTwitterApiRepo)
 
     @Provides
     @Singleton
@@ -52,6 +67,17 @@ object AppModule {
     @Provides
     @Singleton
     fun provideRequestTokenApi() = RequestTokenApi()
+
+    @Provides
+    @Singleton
+    fun provideTwitterApi(preferences: Preferences): TwitterApi{
+        val accessToken = preferences.loadOAuthToken()
+        val accessTokenSecret = preferences.loadOAuthTokenSecret()
+        return TwitterApi.invoke(accessToken,accessTokenSecret)
+    }
+
+    @Provides
+    fun provideHomeTimelineApiToModelMapper() = HomeTimelineApiToModel()
 
     @Provides
     fun provideOAthConsumerToMap() = OAuthConsumerToMap()

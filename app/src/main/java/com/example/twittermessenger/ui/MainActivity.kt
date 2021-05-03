@@ -2,10 +2,9 @@ package com.example.twittermessenger.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.twittermessenger.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var navController: NavController
+
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,17 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         navController = navHostFragment.navController
 
-        setupActionBarWithNavController(navController)
+        appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.tweet_fragment
+        ))
+
+        setupActionBarWithNavController(navController,appBarConfiguration)
+
     }
 
-/*    override fun onResume() {
-        super.onResume()
-        val url = intent.data
-        if (url != null) {
-            Log.i(">>>>>>>>>>>>>>>>>>", "$url")
-            Toast.makeText(this, "yay!!!", Toast.LENGTH_LONG).show()
-        } else {
-            Log.i("..................","url = null")
-        }
-    }*/
 }
