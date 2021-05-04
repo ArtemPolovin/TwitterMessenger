@@ -47,7 +47,7 @@ class TweetFragment : Fragment() {
                    text_error.text = it.message
                 }
                is Reslt.Success -> {
-                    text_tweet.text = "Author: ${it.data?.name}\nTweet: ${it.data?.tweet}"
+                    text_tweet.text = "Author: ${it.data.name}\nTweet: ${it.data.tweet}"
                 }
             }
 

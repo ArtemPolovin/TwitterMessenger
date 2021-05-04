@@ -22,7 +22,7 @@ class RequestTwitterApiRepositoryImpl(
         return requestTokenApi.httpRequestToken()
     }
 
-    override suspend fun accessToken(verifier: String): Map<String, String> {
+    override suspend fun saveAccesstoken(verifier: String): Map<String, String> {
 
         val accessToken: Map<String, String> = oauthConsumerMapper.invoke(
             requestTokenApi.getAccessToken(verifier)
@@ -35,7 +35,6 @@ class RequestTwitterApiRepositoryImpl(
     }
 
     override suspend fun getHomeTimeline(): Reslt<HomeTimelineModel> {
-
 
         return try {
             val response = twitterApi.getHomeTimeline()

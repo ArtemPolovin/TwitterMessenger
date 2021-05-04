@@ -1,7 +1,6 @@
 package com.example.twittermessenger.ui.authorization
 
 import android.net.Uri
-import android.util.Log
 import android.webkit.WebResourceRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -27,19 +26,15 @@ class AuthorizationViewModel @Inject constructor(
     private val _token = MutableLiveData<String>()
     val token: LiveData<String> get() = _token
 
-    private val _accessToken = MutableLiveData<Map<String, String>>()
-    val accessToken: LiveData<Map<String, String>> get() = _accessToken
-
-
     private fun fetchToken() {
         viewModelScope.launch {
-            _token.value = getTokenUseCase()
+            _token.value = getTokenUseCase.invoke()
         }
     }
 
-    private fun myAccessToken(verifier: String) {
+    private fun fetchAccessToken(verifier: String) {
         viewModelScope.launch {
-            _accessToken.value = getAccessTokenUseCase.invoke(verifier)
+             getAccessTokenUseCase.invoke(verifier)
         }
     }
 
@@ -58,7 +53,7 @@ class AuthorizationViewModel @Inject constructor(
                 uri?.let {
                     val verifier =
                         it.getQueryParameter(com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY)
-                    verifier?.let { myAccessToken(verifier = verifier) }
+                    verifier?.let { fetchAccessToken(verifier = verifier) }
                 }
                 return true
             }
