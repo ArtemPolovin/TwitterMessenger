@@ -24,7 +24,7 @@ class TweetViewModel @Inject constructor(
          _homeTimeline.value = Reslt.Loading
 
          viewModelScope.launch{
-             _homeTimeline.value =  getHomeTimelineUseCase()
+             _homeTimeline.value =  getHomeTimelineUseCase.invoke()
          }
     }
 
