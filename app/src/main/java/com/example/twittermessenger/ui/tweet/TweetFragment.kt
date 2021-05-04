@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.example.domain.common.Reslt
 import com.example.domain.common.Status
 import com.example.twittermessenger.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,15 +36,18 @@ class TweetFragment : Fragment() {
     private fun setUpHomeTimeline() {
         viewModel.homeTimeline.observe(viewLifecycleOwner, Observer {
             progress_bar.visibility = View.GONE
+            text_error.visibility = View.GONE
 
-            when (it.status) {
-                Status.LOADING -> {
+            when (it) {
+                Reslt.Loading -> {
                     progress_bar.visibility = View.VISIBLE
                 }
-                Status.ERROR -> {
-                    text_tweet.text = it.message
+                is Reslt.Failure -> {
+                    text_error.visibility = View.VISIBLE
+                    it.error?.printStackTrace()
+                   text_error.text = it.message
                 }
-                Status.SUCCESS ->{
+               is Reslt.Success -> {
                     text_tweet.text = "Author: ${it.data?.name}\nTweet: ${it.data?.tweet}"
                 }
             }

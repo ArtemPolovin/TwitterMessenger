@@ -6,10 +6,9 @@ import com.example.data.mapers.HomeTimelineApiToModel
 import com.example.data.mapers.OAuthConsumerToMap
 import com.example.data.network.RequestTokenApi
 import com.example.data.network.TwitterApi
-import com.example.domain.common.Resource
+import com.example.domain.common.Reslt
 import com.example.domain.models.HomeTimelineModel
 import com.example.domain.repositories.RequestTwitterApiRepository
-import java.lang.Exception
 
 class RequestTwitterApiRepositoryImpl(
     private val requestTokenApi: RequestTokenApi,
@@ -35,21 +34,22 @@ class RequestTwitterApiRepositoryImpl(
         return accessToken
     }
 
-    override suspend fun getHomeTimeline(): Resource<HomeTimelineModel> {
+    override suspend fun getHomeTimeline(): Reslt<HomeTimelineModel> {
 
-       return try {
+
+        return try {
             val response = twitterApi.getHomeTimeline()
             if (response.isSuccessful) {
                 response.body()?.let {
-                    return@let Resource.success(homeTimelineApiToModel.mapHomeTimelineApiToModel(it))
-                } ?: Resource.error("An unknown error occured", null)
+                    return@let Reslt.Success(homeTimelineApiToModel.mapHomeTimelineApiToModel(it))
+                } ?: Reslt.Failure(null, "An unknown error occured")
             } else {
-                Log.i("mLog","response error = ${response.errorBody()?.string()}")
-                Resource.error("An unknown error occured", null)
+                Log.i("mLog", "response error = ${response.errorBody()?.string()}")
+                Reslt.Failure(null, "An unknown error occured")
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.error("Couldn't reach the server. Check you internet connection",null)
+            Reslt.Failure(e, "Couldn't reach the server. Check you internet connection")
         }
     }
 }
