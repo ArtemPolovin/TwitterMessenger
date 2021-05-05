@@ -1,4 +1,4 @@
-package com.example.data.modelsapi
+package com.example.data.modelsapi.hometimeline
 
 data class HomeTimelineApiModelItem(
     val contributors: Any,

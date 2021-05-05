@@ -1,6 +1,6 @@
 package com.example.data.mapers
 
-import com.example.data.modelsapi.HomeTimelineApiModel
+import com.example.data.modelsapi.hometimeline.HomeTimelineApiModel
 import com.example.domain.models.HomeTimelineModel
 
 class HomeTimelineApiToModel {

@@ -1,6 +1,7 @@
 package com.example.twittermessenger.ui.authorization
 
 import android.net.Uri
+import android.util.Log
 import android.webkit.WebResourceRequest
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,8 +9,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.common.Constants
 import com.example.data.common.Preferences
+import com.example.domain.common.Reslt
 import com.example.domain.usecases.GetAccessTokenUseCase
 import com.example.domain.usecases.GetTokenUseCase
+import com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.net.URISyntaxException
@@ -34,9 +37,13 @@ class AuthorizationViewModel @Inject constructor(
 
     private fun fetchAccessToken(verifier: String) {
         viewModelScope.launch {
-             getAccessTokenUseCase.invoke(verifier)
+            _accessToken.value =  getAccessTokenUseCase.invoke(verifier)
         }
     }
+
+    private val _accessToken = MutableLiveData<Reslt<Map<String,String>>>()
+    val accessToken: LiveData<Reslt<Map<String,String>>>get() = _accessToken
+
 
     fun handleUrl(request: WebResourceRequest?): Boolean {
         var uri: Uri? = null
@@ -52,13 +59,12 @@ class AuthorizationViewModel @Inject constructor(
 
                 uri?.let {
                     val verifier =
-                        it.getQueryParameter(com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY)
+                        it.getQueryParameter(OAUTH_VERIFIER_PARAMETER_KEY)
                     verifier?.let { fetchAccessToken(verifier = verifier) }
                 }
                 return true
             }
         }
-
         return false
     }
 

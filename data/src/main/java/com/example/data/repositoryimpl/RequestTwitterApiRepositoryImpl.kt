@@ -14,7 +14,7 @@ class RequestTwitterApiRepositoryImpl(
     private val requestTokenApi: RequestTokenApi,
     private val preferences: Preferences,
     private val oauthConsumerMapper: OAuthConsumerToMap,
-    private val twitterApi: TwitterApi,
+    private val twitterApi: dagger.Lazy<TwitterApi>,
     private val homeTimelineApiToModel: HomeTimelineApiToModel
 ) : RequestTwitterApiRepository {
 
@@ -22,33 +22,45 @@ class RequestTwitterApiRepositoryImpl(
         return requestTokenApi.httpRequestToken()
     }
 
-    override suspend fun saveAccesstoken(verifier: String): Map<String, String> {
+    override suspend fun getAccessToken(verifier: String): Reslt<Map<String, String>> {
 
-        val accessToken: Map<String, String> = oauthConsumerMapper.invoke(
-            requestTokenApi.getAccessToken(verifier)
-        )
+      return  try {
+            val consumer = requestTokenApi.getAccessToken(verifier)
+            if (!(consumer.token.isNullOrEmpty() && consumer.tokenSecret.isNullOrEmpty())) {
+                val accessToken = oauthConsumerMapper.invoke(consumer)
+                saveAccessToken(accessToken)
+                Reslt.Success(accessToken)
+            } else {
+                Reslt.Failure(message = "The access token was not got")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Reslt.Failure(message = "Couldn't reach the server. Check you internet connection")
+        }
 
-        accessToken["oauthToken"]?.let { preferences.saveOAuthToken(it) }
-        accessToken["oauthTokenSecret"]?.let { preferences.saveOAuthTokenSecret(it) }
-
-        return accessToken
     }
 
     override suspend fun getHomeTimeline(): Reslt<HomeTimelineModel> {
 
         return try {
-            val response = twitterApi.getHomeTimeline()
+
+            val response = twitterApi.get().getHomeTimeline()
             if (response.isSuccessful) {
                 response.body()?.let {
                     return@let Reslt.Success(homeTimelineApiToModel.mapHomeTimelineApiToModel(it))
-                } ?: Reslt.Failure(null, "An unknown error occured")
+                } ?: Reslt.Failure(message = "An unknown error occured")
             } else {
                 Log.i("mLog", "response error = ${response.errorBody()?.string()}")
-                Reslt.Failure(null, "An unknown error occured")
+                Reslt.Failure(message = "An unknown error occured")
             }
         } catch (e: Exception) {
             e.printStackTrace()
             Reslt.Failure(e, "Couldn't reach the server. Check you internet connection")
         }
+    }
+
+    private fun saveAccessToken(tokenMap: Map<String, String>) {
+        tokenMap["oauthToken"]?.let { preferences.saveOAuthToken(it) }
+        tokenMap["oauthTokenSecret"]?.let { preferences.saveOAuthTokenSecret(it) }
     }
 }

@@ -3,19 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/authorizationFragment">
+    app:startDestination="@id/authorization_fragment">
     <fragment
-        android:id="@+id/authorizationFragment"
+        android:id="@+id/authorization_fragment"
         android:name="com.example.twittermessenger.ui.authorization.AuthorizationFragment"
         android:label="Authorization"
         tools:layout="@layout/fragment_autorization" >
-        <action
-            android:id="@+id/action_authorizationFragment_to_tweetFragment"
-            app:destination="@id/tweet_fragment" />
     </fragment>
     <fragment
         android:id="@+id/tweet_fragment"
         android:name="com.example.twittermessenger.ui.tweet.TweetFragment"
         android:label="Tweets"
-        tools:layout="@layout/fragment_tweet" />
+        tools:layout="@layout/fragment_tweet" >
+    </fragment>
 </navigation>

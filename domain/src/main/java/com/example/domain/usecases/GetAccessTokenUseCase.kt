@@ -5,6 +5,6 @@ import com.example.domain.repositories.RequestTwitterApiRepository
 class GetAccessTokenUseCase(private val requestTwitterApiRepo: RequestTwitterApiRepository) {
 
    suspend operator fun invoke(verifier: String) =
-        requestTwitterApiRepo.saveAccesstoken(verifier)
+        requestTwitterApiRepo.getAccessToken(verifier)
 
 }

@@ -18,6 +18,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import org.jetbrains.annotations.NotNull
 import javax.inject.Singleton
 
 
@@ -31,7 +32,7 @@ object AppModule {
         requestTokenApi: RequestTokenApi,
         preferences: Preferences,
         oauthConsumerToMap: OAuthConsumerToMap,
-        twitterApi: TwitterApi,
+        twitterApi: dagger.Lazy<TwitterApi>,
         homeTimelineApiToModel: HomeTimelineApiToModel
     ): RequestTwitterApiRepository =
         RequestTwitterApiRepositoryImpl(
@@ -70,11 +71,13 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideTwitterApi(preferences: Preferences): TwitterApi{
-        val accessToken = preferences.loadOAuthToken()
-        val accessTokenSecret = preferences.loadOAuthTokenSecret()
-        return TwitterApi.invoke(accessToken,accessTokenSecret)
+    fun provideTwitterApi(preferences: Preferences): TwitterApi {
+           val accessToken = preferences.loadOAuthToken()
+           val accessTokenSecret = preferences.loadOAuthTokenSecret()
+           return TwitterApi.invoke(accessToken, accessTokenSecret)
+
     }
+
 
     @Provides
     fun provideHomeTimelineApiToModelMapper() = HomeTimelineApiToModel()

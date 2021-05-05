@@ -1,3 +1,3 @@
-package com.example.data.modelsapi
+package com.example.data.modelsapi.hometimeline
 
 class HomeTimelineApiModel : ArrayList<HomeTimelineApiModelItem>()
