@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -86,7 +87,7 @@ dependencies {
    // implementation lifecycle.livedataKtx
     implementation lifecycle.lifecycleExtentions
 
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
 
     implementation (group: 'oauth.signpost', name: 'signpost-core', version: '1.2.1.2')
     implementation (group: 'oauth.signpost', name: 'signpost-commonshttp4', version: '1.2.1.2')

@@ -1,7 +1,7 @@
 package com.example.domain.usecases
 
-import com.example.domain.repositories.RequestTokenRepository
+import com.example.domain.repositories.RequestTwitterApiRepository
 
-class GetTokenUseCase(private val requestTokenRepository: RequestTokenRepository) {
-    suspend operator fun invoke() = requestTokenRepository.getToken()
+class GetTokenUseCase(private val requestTwitterApiRepository: RequestTwitterApiRepository) {
+    suspend operator fun invoke() = requestTwitterApiRepository.getToken()
 }

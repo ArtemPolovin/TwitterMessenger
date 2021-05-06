@@ -73,7 +73,18 @@ dependencies {
     implementation coroutines.coroutinesAndroid
 
     // OAuth_Signpost
-    implementation (group: 'oauth.signpost', name: 'signpost-core', version: '1.2.1.2')
-    implementation (group: 'oauth.signpost', name: 'signpost-commonshttp4', version: '1.2.1.2')
+    implementation(group: 'oauth.signpost', name: 'signpost-core', version: '1.2.1.2')
+    implementation(group: 'oauth.signpost', name: 'signpost-commonshttp4', version: '1.2.1.2')
+
+
+    // OkHttp_Signpost
+    implementation okhttpSignpost.signpost
+
+    // OkHttp3
+    implementation okhttp3.okhttp3
+
+    // Signpost_core
+    implementation signpostCore.signpostCore
+
 
 }

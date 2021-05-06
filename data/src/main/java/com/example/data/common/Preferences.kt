@@ -9,11 +9,11 @@ import com.example.data.common.Constants.ACCESS_OAUTH_TOKEN_SECRET
 ){
 
     fun saveOAuthToken(oauthToken: String) {
-        sharedPref.edit().putString(ACCESS_OAUTH_TOKEN,oauthToken).apply()
+        sharedPref.edit().putString(ACCESS_OAUTH_TOKEN,oauthToken).commit()
     }
 
     fun saveOAuthTokenSecret(oauthTokenSecret: String) {
-        sharedPref.edit().putString(ACCESS_OAUTH_TOKEN_SECRET,oauthTokenSecret).apply()
+        sharedPref.edit().putString(ACCESS_OAUTH_TOKEN_SECRET,oauthTokenSecret).commit()
     }
 
     fun loadOAuthToken(): String {

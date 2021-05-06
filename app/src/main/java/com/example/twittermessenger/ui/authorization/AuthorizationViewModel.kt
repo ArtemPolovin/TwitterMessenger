@@ -10,7 +10,10 @@ import com.example.data.common.Constants
 import com.example.data.common.Preferences
 import com.example.domain.usecases.GetAccessTokenUseCase
 import com.example.domain.usecases.GetTokenUseCase
+import com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import java.net.URISyntaxException
 import javax.inject.Inject
@@ -26,19 +29,19 @@ class AuthorizationViewModel @Inject constructor(
     private val _token = MutableLiveData<String>()
     val token: LiveData<String> get() = _token
 
-    private val _accessToken = MutableLiveData<Map<String, String>>()
-    val accessToken: LiveData<Map<String, String>> get() = _accessToken
-
+    private val _receivedAccessToken = Channel<Boolean>(Channel.BUFFERED)
+    val receivedAccessToken = _receivedAccessToken.receiveAsFlow()
 
     private fun fetchToken() {
         viewModelScope.launch {
-            _token.value = getTokenUseCase()
+            _token.value = getTokenUseCase.invoke()
         }
     }
 
-    private fun myAccessToken(verifier: String) {
+    private fun fetchAccessToken(verifier: String) {
         viewModelScope.launch {
-            _accessToken.value = getAccessTokenUseCase.invoke(verifier)
+            getAccessTokenUseCase.invoke(verifier)
+            _receivedAccessToken.send(isAuthorized())
         }
     }
 
@@ -56,13 +59,12 @@ class AuthorizationViewModel @Inject constructor(
 
                 uri?.let {
                     val verifier =
-                        it.getQueryParameter(com.example.twittermessenger.common.Constants.OAUTH_VERIFIER_PARAMETER_KEY)
-                    verifier?.let { myAccessToken(verifier = verifier) }
+                        it.getQueryParameter(OAUTH_VERIFIER_PARAMETER_KEY)
+                    verifier?.let { fetchAccessToken(verifier = verifier) }
                 }
                 return true
             }
         }
-
         return false
     }
 
