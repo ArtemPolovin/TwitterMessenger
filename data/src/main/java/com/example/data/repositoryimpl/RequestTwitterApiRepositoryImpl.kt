@@ -22,9 +22,9 @@ class RequestTwitterApiRepositoryImpl(
         return requestTokenApi.httpRequestToken()
     }
 
-    override suspend fun getAccessToken(verifier: String): Reslt<Map<String, String>> {
+    override suspend fun getAccessToken(verifier: String) {
 
-      return  try {
+        try {
             val consumer = requestTokenApi.getAccessToken(verifier)
             if (!(consumer.token.isNullOrEmpty() && consumer.tokenSecret.isNullOrEmpty())) {
                 val accessToken = oauthConsumerMapper.invoke(consumer)
@@ -47,7 +47,7 @@ class RequestTwitterApiRepositoryImpl(
             val response = twitterApi.get().getHomeTimeline()
             if (response.isSuccessful) {
                 response.body()?.let {
-                    return@let Reslt.Success(homeTimelineApiToModel.mapHomeTimelineApiToModel(it))
+                    return@let Reslt.Success(homeTimelineApiToModel.map(it))
                 } ?: Reslt.Failure(message = "An unknown error occured")
             } else {
                 Log.i("mLog", "response error = ${response.errorBody()?.string()}")

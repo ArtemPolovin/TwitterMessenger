@@ -17,10 +17,12 @@ import androidx.navigation.Navigation
 import com.example.domain.common.Reslt
 import com.example.twittermessenger.R
 import com.example.twittermessenger.common.Constants.TWITTER_AUTHORIZATION_URL
+import com.example.twittermessenger.common.observeInLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_autorization.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -73,13 +75,12 @@ class AuthorizationFragment : Fragment() {
                     view: WebView?, request: WebResourceRequest?
                 ): Boolean {
                     viewModel.handleUrl(request)
-                    viewModel.accessToken.observe(viewLifecycleOwner, Observer {
-                        when (it) {
-                            is Reslt.Failure -> Log.i("ERROR", it.message)
-                            is Reslt.Success -> navController.navigate(R.id.tweet_fragment)
-                        }
 
-                    })
+                    viewModel.receivedAccessToken.onEach {
+                       if(it) navController.navigate(R.id.tweet_fragment)
+                    }
+                        .observeInLifecycle(viewLifecycleOwner)
+
                     return true
                 }
             }
