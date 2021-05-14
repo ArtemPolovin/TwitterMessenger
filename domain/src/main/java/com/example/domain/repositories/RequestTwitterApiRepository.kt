@@ -6,6 +6,6 @@ import com.example.domain.models.HomeTimelineModel
 interface RequestTwitterApiRepository {
    suspend fun getToken(): String
    suspend fun getAccessToken(verifier: String)
-   suspend fun getHomeTimeline(): Reslt<HomeTimelineModel>
+   suspend fun getHomeTimeline(): Reslt<List<HomeTimelineModel>>
 
 }

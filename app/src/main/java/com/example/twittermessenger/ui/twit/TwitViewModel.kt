@@ -1,4 +1,4 @@
-package com.example.twittermessenger.ui.tweet
+package com.example.twittermessenger.ui.twit
 
 
 import androidx.lifecycle.LiveData
@@ -13,12 +13,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TweetViewModel @Inject constructor(
+class TwitViewModel @Inject constructor(
     private val getHomeTimelineUseCase: GetHomeTimelineUseCase
 ): ViewModel() {
 
-    private val _homeTimeline = MutableLiveData<Reslt<HomeTimelineModel>>()
-    val homeTimeline : LiveData<Reslt<HomeTimelineModel>>get() = _homeTimeline
+    private val _homeTimeline = MutableLiveData<Reslt<List<HomeTimelineModel>>>()
+    val homeTimeline : LiveData<Reslt<List<HomeTimelineModel>>>get() = _homeTimeline
 
    private  fun fetchHomeTimeline() {
          _homeTimeline.value = Reslt.Loading

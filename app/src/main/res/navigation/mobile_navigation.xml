@@ -12,8 +12,20 @@
     </fragment>
     <fragment
         android:id="@+id/tweet_fragment"
-        android:name="com.example.twittermessenger.ui.tweet.TweetFragment"
+        android:name="com.example.twittermessenger.ui.twit.TwitFragment"
         android:label="Tweets"
         tools:layout="@layout/fragment_tweet" >
+        <action
+            android:id="@+id/action_tweet_fragment_to_twit_image"
+            app:destination="@id/twit_image" />
+    </fragment>
+    <fragment
+        android:id="@+id/twit_image"
+        android:name="com.example.twittermessenger.ui.twit.image.TwitImageFragment"
+        android:label="fragment_twit_image"
+        tools:layout="@layout/fragment_twit_image" >
+        <action
+            android:id="@+id/action_twit_image_to_tweet_fragment2"
+            app:destination="@id/tweet_fragment" />
     </fragment>
 </navigation>

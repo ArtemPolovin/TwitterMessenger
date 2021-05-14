@@ -43,7 +43,9 @@ ext.versions = [
         liveData        : "2.2.0",
         okHttpSignpost  : "1.1.0",
         okhttp3         : "4.7.2",
-        signpostCore    : "1.2.1.2"
+        signpostCore    : "1.2.1.2",
+        picasso         : "2.71828",
+        ecyclerView    : "1.1.0"
 ]
 
 ext.core = [
@@ -114,6 +116,13 @@ ext.signpostCore = [
         signpostCore: "oauth.signpost:signpost-core:$versions.signpostCore"
 ]
 
+ext.picasso = [
+        picasso: "com.squareup.picasso:picasso:$versions.picasso"
+]
+
+ext.recyclerView = [
+        recyclerView: "androidx.recyclerview:recyclerview:$versions.recyclerView"
+]
 
 
 
