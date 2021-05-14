@@ -1,6 +1,7 @@
 package com.example.data.modelsapi.hometimeline
 
 data class HomeTimelineApiModelItem(
+    val extended_entities: ExtendedEntities,
     val contributors: Any,
     val coordinates: Any,
     val created_at: String,

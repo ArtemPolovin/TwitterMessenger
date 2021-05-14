@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="error_text_color">#8B0D03</color>
+    <color name="cell_twit_background_stroke_color">#B1B1B1</color>
+    <color name="photo_fragment_background_color">#383B49</color>
 </resources>

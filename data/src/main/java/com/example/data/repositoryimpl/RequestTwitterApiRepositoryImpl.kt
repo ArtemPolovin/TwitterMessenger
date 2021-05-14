@@ -40,7 +40,7 @@ class RequestTwitterApiRepositoryImpl(
 
     }
 
-    override suspend fun getHomeTimeline(): Reslt<HomeTimelineModel> {
+    override suspend fun getHomeTimeline(): Reslt<List<HomeTimelineModel>> {
 
         return try {
 
